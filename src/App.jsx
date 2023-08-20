@@ -1,4 +1,5 @@
 import { useState } from "react"
+import 'bootstrap/scss/bootstrap.scss'
 
 const data = [
   {
@@ -57,7 +58,7 @@ function App() {
 
   return (
     <>
-      <h1>React Workshop Homework #2</h1>
+      <h3>React Workshop Homework #2</h3>
       <div id="root">
         <div className="container mt-5">
           <div className="row">
