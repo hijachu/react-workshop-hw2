@@ -78,7 +78,7 @@ function Menu({menu, pickToShoppingList}) {
   </>)
 }
 
-function ShoppingList({shoppingList, setShoppingList, sum}) {
+function ShoppingList({shoppingList, setShoppingList, updateShoppingList, sum}) {
   return (<>
     <table className="table">
       <thead>
@@ -107,7 +107,7 @@ function ShoppingList({shoppingList, setShoppingList, sum}) {
                 <td>{shoppingItem.name}</td>
                 <td><small>{shoppingItem.description}</small></td>
                 <td>
-                  <select className="form-select">
+                  {/* <select className="form-select">
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -118,7 +118,15 @@ function ShoppingList({shoppingList, setShoppingList, sum}) {
                     <option value="8">8</option>
                     <option value="9">9</option>
                     <option value="10">10</option>
-                  </select>
+                  </select> */}
+                  <select className="form-select" value={shoppingItem.quantity} onChange={(e) => {
+                      const value = e.target.value;
+                      updateShoppingList(shoppingItem, value);
+                    }}>
+                      {[...Array(10).keys()].map((item) => {
+                        return (<option value={item + 1} key={item}>{item + 1}</option>)
+                      })}
+                    </select>                  
                 </td>
                 <td>{shoppingItem.price}</td>
                 <td>{shoppingItem.subtotal}</td>
@@ -209,7 +217,7 @@ function App() {
               <Menu menu={menu} pickToShoppingList={pickToShoppingList}/>
             </div>
             <div className="col-md-8">
-              <ShoppingList shoppingList={shoppingList} setShoppingList={setShoppingList} />
+              <ShoppingList shoppingList={shoppingList} setShoppingList={setShoppingList} updateShoppingList={updateShoppingList} />
             </div>
           </div>
 
