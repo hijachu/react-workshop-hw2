@@ -52,18 +52,18 @@ const data = [
   }
 ]
 
-function MenuItem({name, price, description, pickToShoppingList}) {
+function MenuItem({item, pickToShoppingList}) {
   return (<>
     <a href="#" className="list-group-item list-group-item-action"
       onClick={(e) => {
         e.preventDefault()
-        pickToShoppingList()
+        pickToShoppingList(item)
       }}>
       <div className="d-flex w-100 justify-content-between">
-        <h5 className="mb-1">{name}</h5>
-        <small>${price}</small>
+        <h5 className="mb-1">{item.name}</h5>
+        <small>${item.price}</small>
       </div>
-      <p className="mb-1">{description}</p>
+      <p className="mb-1">{item.description}</p>
     </a>
   </>)
 }
@@ -72,7 +72,7 @@ function Menu({menu, pickToShoppingList}) {
   return (<>
     <div className="list-group">
       {
-        menu.map(item => <MenuItem key={item.id} name={item.name} price={item.price} description={item.description} pickToShoppingList={pickToShoppingList}/>)
+        menu.map(item => <MenuItem key={item.id} item={item} pickToShoppingList={pickToShoppingList}/>)
       }
     </div>
   </>)
@@ -94,8 +94,8 @@ function ShoppingList({shoppingList}) {
       <tbody>
         {
           shoppingList.map(shoppingItem => {
-            return (<>
-              <tr>
+            return (
+              <tr key={shoppingItem.id}>
                 <td><button type="button" className="btn btn-sm">x</button></td>
                 <td>{shoppingItem.name}</td>
                 <td><small>{shoppingItem.description}</small></td>
@@ -116,31 +116,9 @@ function ShoppingList({shoppingList}) {
                 <td>{shoppingItem.price}</td>
                 <td>{shoppingItem.subtotal}</td>
               </tr>
-            </>)
+            )
           })
         }
-
-        <tr>
-          <td><button type="button" className="btn btn-sm">x</button></td>
-          <td>翡翠檸檬</td>
-          <td><small>綠茶與檸檬的完美結合</small></td>
-          <td>
-            <select className="form-select">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
-          </td>
-          <td>55</td>
-          <td>55</td>
-        </tr>
       </tbody>
     </table>
     <div className="text-end mb-3">
@@ -161,16 +139,22 @@ function App() {
 
   const [menu, setMenu] = useState(data)
   const [shoppingList, setShoppingList] = useState([])
+  const [description, setDescription] = useState('')
+  const [sum, setSum] = useState(0)
   const [order, setOrder] = useState([])
 
   const pickToShoppingList = (menuItem) => {
-    setShoppingList([...shoppingList, {
-      ...menuItem,
-      id: new Date().getTime(),
-      quantity: 1,
-      subtotal: menuItem.price,
-    }])
+    setShoppingList([
+        ...shoppingList, 
+        {
+          ...menuItem,
+          id: new Date().getTime(),
+          quantity: 1,
+          subtotal: menuItem.price,
+        }
+      ]);
   }
+
 
   return (
     <>
