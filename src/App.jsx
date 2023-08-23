@@ -78,7 +78,7 @@ function Menu({menu, pickToShoppingList}) {
   </>)
 }
 
-function ShoppingList({shoppingList}) {
+function ShoppingList({shoppingList, setShoppingList, sum}) {
   return (<>
     <table className="table">
       <thead>
@@ -96,7 +96,14 @@ function ShoppingList({shoppingList}) {
           shoppingList.map(shoppingItem => {
             return (
               <tr key={shoppingItem.id}>
-                <td><button type="button" className="btn btn-sm">x</button></td>
+                <td>
+                  <button type="button" className="btn btn-sm" onClick={() => {
+                    const newShoppingList = shoppingList.filter((keptItem) => {
+                      return keptItem.id !== shoppingItem.id
+                    })
+                    setShoppingList(newShoppingList)
+                  }}>x</button>
+                </td>
                 <td>{shoppingItem.name}</td>
                 <td><small>{shoppingItem.description}</small></td>
                 <td>
@@ -122,7 +129,7 @@ function ShoppingList({shoppingList}) {
       </tbody>
     </table>
     <div className="text-end mb-3">
-      <h5>總計: <span>$100</span></h5>
+      <h5>總計: <span>${sum}</span></h5>
     </div>
     <textarea
       className="form-control mb-3"
@@ -130,7 +137,7 @@ function ShoppingList({shoppingList}) {
       placeholder="備註"
     ></textarea>
     <div className="text-end">
-      <button className="btn btn-primary">送出</button>
+      <button className="btn btn-primary" onClick={(e) => {}}>送出</button>
     </div>
   </>)
 }
@@ -155,6 +162,42 @@ function App() {
       ]);
   }
 
+  const updateShoppingList = (item, value) => {
+    const newShoppingList = shoppingList.map((cartItem) => {
+      if (cartItem.id === item.id) {
+        return {
+          ...cartItem,
+          quantity: parseInt(value),
+          subtotal: cartItem.price * parseInt(value)
+        }
+      }
+
+      return cartItem;
+    });
+
+    setShoppingList(newShoppingList);
+  }
+
+  const createOrder = () => {
+    setOrder({
+      id: new Date().getTime(),
+      shoppingList,
+      description,
+      sum
+    });
+
+    setShoppingList([])
+    setDescription('')
+  }
+
+
+  // useEffect(() => {
+  //   const total = shoppingList.reduce((pre, next) => {
+  //     return pre + next.price
+  //   }, 0);
+
+  //   setSum(total);
+  // }, [shoppingList])
 
   return (
     <>
@@ -166,7 +209,7 @@ function App() {
               <Menu menu={menu} pickToShoppingList={pickToShoppingList}/>
             </div>
             <div className="col-md-8">
-              <ShoppingList shoppingList={shoppingList} />
+              <ShoppingList shoppingList={shoppingList} setShoppingList={setShoppingList} />
             </div>
           </div>
 
