@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import 'bootstrap/scss/bootstrap.scss'
 
 const data = [
@@ -199,13 +199,13 @@ function App() {
   }
 
 
-  // useEffect(() => {
-  //   const total = shoppingList.reduce((pre, next) => {
-  //     return pre + next.price
-  //   }, 0);
+  useEffect(() => {
+    const total = shoppingList.reduce((pre, next) => {
+      return pre + next.price * next.quantity
+    }, 0);
 
-  //   setSum(total);
-  // }, [shoppingList])
+    setSum(total);
+  }, [shoppingList])
 
   return (
     <>
@@ -217,7 +217,7 @@ function App() {
               <Menu menu={menu} pickToShoppingList={pickToShoppingList}/>
             </div>
             <div className="col-md-8">
-              <ShoppingList shoppingList={shoppingList} setShoppingList={setShoppingList} updateShoppingList={updateShoppingList} />
+              <ShoppingList shoppingList={shoppingList} setShoppingList={setShoppingList} updateShoppingList={updateShoppingList} sum={sum} />
             </div>
           </div>
 
