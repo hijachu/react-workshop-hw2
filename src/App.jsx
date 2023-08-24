@@ -78,7 +78,7 @@ function Menu({menu, pickToShoppingList}) {
   </>)
 }
 
-function ShoppingList({shoppingList, setShoppingList, updateShoppingList, sum}) {
+function ShoppingListCart({shoppingList, setShoppingList, updateShoppingList, sum, setDescription, createOrder}) {
   return (<>
     <table className="table">
       <thead>
@@ -107,18 +107,6 @@ function ShoppingList({shoppingList, setShoppingList, updateShoppingList, sum}) 
                 <td>{shoppingItem.name}</td>
                 <td><small>{shoppingItem.description}</small></td>
                 <td>
-                  {/* <select className="form-select">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                  </select> */}
                   <select className="form-select" value={shoppingItem.quantity} onChange={(e) => {
                       const value = e.target.value;
                       updateShoppingList(shoppingItem, value);
@@ -143,9 +131,15 @@ function ShoppingList({shoppingList, setShoppingList, updateShoppingList, sum}) 
       className="form-control mb-3"
       rows="3"
       placeholder="備註"
+      onChange={(e) => {
+        setDescription(e.target.value)
+      }}
     ></textarea>
     <div className="text-end">
-      <button className="btn btn-primary" onClick={(e) => {}}>送出</button>
+      <button className="btn btn-primary" onClick={(e) => {
+        e.preventDefault()
+        createOrder()
+      }}>送出</button>
     </div>
   </>)
 }
@@ -214,10 +208,16 @@ function App() {
         <div className="container mt-5">
           <div className="row">
             <div className="col-md-4">
-              <Menu menu={menu} pickToShoppingList={pickToShoppingList}/>
+              <Menu menu={menu} pickToShoppingList={pickToShoppingList} />
             </div>
             <div className="col-md-8">
-              <ShoppingList shoppingList={shoppingList} setShoppingList={setShoppingList} updateShoppingList={updateShoppingList} sum={sum} />
+              <ShoppingListCart 
+                shoppingList={shoppingList} 
+                setShoppingList={setShoppingList} 
+                updateShoppingList={updateShoppingList} 
+                sum={sum}
+                setDescription={setDescription}
+                createOrder={createOrder} />
             </div>
           </div>
 
