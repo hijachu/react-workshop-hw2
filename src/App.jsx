@@ -200,7 +200,18 @@ function App() {
   const [order, setOrder] = useState({})
 
   const pickToShoppingList = (menuItem) => {
-    setShoppingList([
+    const alreadyPickedItem = shoppingList.find(listItem => listItem.name === menuItem.name)
+    if (alreadyPickedItem) {
+      //   const incrementPickedItemInList = shoppingList.map(listItem => ((listItem.name === menuItem.name) ? {
+      //   ...listItem,
+      //   quantity: listItem.quantity + 1
+      // }: listItem));
+
+      // setShoppingList(incrementPickedItemInList);
+      updateShoppingList(alreadyPickedItem, alreadyPickedItem.quantity+1)
+
+    } else {
+      setShoppingList([
         ...shoppingList,
         {
           ...menuItem,
@@ -209,6 +220,8 @@ function App() {
           subtotal: menuItem.price,
         }
       ]);
+    }
+
   }
 
   const updateShoppingList = (item, value) => {
